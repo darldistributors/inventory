@@ -62,7 +62,7 @@ class SaleController extends Controller
         $data['heldProducts'] = ProductSales::where('sale_id', $data['heldSale']->sales_id ?? '')->get();
         $data['settings'] = Settings::where('id', '<', 10)->first();
        
-        return view('admin.sellProductForm', $data);
+        return view('admin.make-sales', $data);
     }
 
     public static function salesSummary($reports, $val){
@@ -199,7 +199,7 @@ class SaleController extends Controller
                 $updateProductStatus = DB::unprepared($sqlStatement);
             }
             // if anything fails
-            if(!isset($addProductsStatus) || $addProductsStatus === false || (isset($updateProductStatus) && $updateProductStatus === false)) return view('admin.sellProductForm', ['error'=>'Cannot process sales. Try again', 'settings'=>$settings, 'products'=>$this->getSellableProducts()]);
+            if(!isset($addProductsStatus) || $addProductsStatus === false || (isset($updateProductStatus) && $updateProductStatus === false)) return view('admin.make-sales', ['error'=>'Cannot process sales. Try again', 'settings'=>$settings, 'products'=>$this->getSellableProducts()]);
         }
        
 
@@ -207,7 +207,7 @@ class SaleController extends Controller
             // sales not yet complete
             $salesOnHold = 'Sales has been put on hold. You can go to held receipts to continue';
             $products = $this->getSellableProducts();
-            return view('admin.sellProductForm', ['salesOnHold'=>$salesOnHold, 'settings'=>$settings, 'products'=>$products]);
+            return view('admin.make-sales', ['salesOnHold'=>$salesOnHold, 'settings'=>$settings, 'products'=>$products]);
         }
 
         if($request->debt >= 1 && $request->on_hold === '0'){
@@ -262,8 +262,10 @@ class SaleController extends Controller
         if($getIds1[0] === '') return $selected; 
 
         for ($i=0; $i < count($getIds1); $i++) { 
-            $selected['row'.$getIds1[$i]] = $products['row'.$getIds1[$i]];
-            $total += $products['row'.$getIds1[$i]]->selling_price;
+           if(isset($products['row'.$getIds1[$i]])){
+               $selected['row'.$getIds1[$i]] = $products['row'.$getIds1[$i]];
+               $total += $products['row'.$getIds1[$i]]->selling_price;
+            }
         }
 
         return ($getTotal) ? $total : $selected;
@@ -297,8 +299,8 @@ class SaleController extends Controller
             }
            
             // return view('admin.held-sales', $data);
-            return redirect('admin/sales/'.$heldSaleId.'/?items='.implode(',',$productId));
-            // return redirect('admin/sales/?items='.implode(',',$productId));
+            // return redirect('admin/sales/'.$heldSaleId.'/?items='.implode(',',$productId));
+            return redirect('admin/sales/?items='.implode(',',$productId));
         }
         
         return view('admin.sales', $data);

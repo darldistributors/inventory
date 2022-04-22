@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             // 'name' => Str::random(10),
             'username' => 'admin',
             'password' => 'pass',
-            'name' => 'John Doe'
+            'name' => 'John Doe',
+            'type'=>'admin'
         ]);
 
         // Products insert

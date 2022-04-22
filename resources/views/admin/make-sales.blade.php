@@ -124,7 +124,9 @@
                   <td class="item_total" id="item_total{{$product1->id}}">{{$heldProducts[$loop->index]->total_cost ?? $product1->selling_price ?? 1 }}</td>
                   <td>
                     <span style="visibility: hidden" id="unit_cost{{$product1->id}}">{{$product1->unit_cost}}</span>
+                    @if(!isset($heldSale->customer_phone))
                     <button title="remove from cart" class="btn btn-danger btn-sm" onclick="removeSelectedItem({{$product1->id}})">-</button>
+                    @endif
                   </td>
                 </tr>
                 
@@ -174,13 +176,21 @@
                     <input id="grand_total2" type="hidden" name="total" value="{{$selectedProds::getProd($products, $_GET['items'] ?? '', true)}}">
                     <h3>TOTAL: {!!$settings->currency!!}<span id="grand_total">{{$selectedProds::getProd($products, $_GET['items'] ?? '', true)}}</span></h3>
                     <!-- <label for="">Put on hold? </label> -->
+                    @if(!isset($heldSale->customer_phone))
                     <select name="on_hold" class="form-control-select" style="width:49%;padding:6px">
                       <option value="0">--Put sale on hold(No)?--</option>
                       <option value="0">No</option>
                       <option value="1">Yes</option>
                     </select>
+                    @else
+                    <input type="hidden" value="0" name="on_hold">
+                    <a href="{{'admin/delete/'.$heldSale->sales_id}}" class="btn btn-danger btn-sm" style="width:49%;">Delete this sale  <i class="fa fa-trash" aria-hidden="true"></i> </a>
+                    @endif
                     <!-- <button class="btn btn-warning " style="width:49%;">Put on hold</button> -->
-                    <button class="btn btn-danger " style="width:49%;">Cancel sale</button>
+                    <x-nav-link :href="route('sales')" style="width:49%;" class="btn btn-danger btn-sm">
+                        Make sales
+                    </x-nav-link>
+                    <!-- <button class="btn btn-danger " style="width:49%;">Cancel sale</button> -->
                     <p></p>
                     <button type="submit" class="btn btn-success btn-lg btn-block">Continue &gt;&gt;</button>
                   </td>
@@ -224,6 +234,7 @@
     var allProducts = {};
 
     @if(!isset($heldSale->sales_id))
+      calculateGrandTotal();
       boot();
     @else
       calculateGrandTotal();

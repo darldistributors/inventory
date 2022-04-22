@@ -14,8 +14,8 @@
 <body>
   <div class="container">
     <div class="row text-center">
-      <div class="col-md-4"></div>
-      <div class="col-md-4 bordered">
+      <!-- <div class="col-md-4"></div> -->
+      <div class="col-md-12 bordered">
       <h1>{{$settings->business_name ?? 'INVENTORY'}}</h1>
         <h3><u>{{$receiptDetails->sales_id ?? '-'}}</u></h3>
         <small>{{$settings->business_address ?? ''}} | </small>
@@ -36,26 +36,25 @@
           <tbody>
                 @forelse ($receiptDetails->products as $product)
                 <tr>
-                  <td>{{ $loop->iteration }}</td>
-                  <td>{{ $product->product_name }}</td>
-                  <td>{{ $product->quantity }}</td>
-                  <td>&#8358;{{ number_format($product->selling_price) }}</td>
-                  <td>&#8358;{{ number_format($product->total_cost) }}</td>
+                  <td><small>{{ $loop->iteration }}</small></td>
+                  <td><small>{{ $product->product_name }}</small></td>
+                  <td><small>{{ $product->quantity }}</small></td>
+                  <td><small>&#8358;{{ number_format($product->selling_price) }}</small></td>
+                  <td><small>&#8358;{{ number_format($product->total_cost) }}</small></td>
                 </tr>
                 @empty
                 <tr>
-                  <td colspan="5">No product yet</td>
+                  <td colspan="5">No product added</td>
                 </tr>
                 @endforelse
                 <tr>
-                <td colspan="5"></td>
+                <td colspan="5"><small>Amount paid:</small><h2>{!!$settings->currency!!}{{number_format($receiptDetails->total)}}</h2></td>
                 </tr>
                 <tr>
-                  <td>Discount on sales:<br><small style='background: #000;color:#fff; padding:5px'>&#8358;{{number_format($receiptDetails->discount)}}</small></td>
-                  <td>Debt on sales:<br><small style='background: #000;color:#fff; padding:5px'>&#8358;{{number_format($receiptDetails->debt_balance)}}</small></td>
-                  <td>Amount paid:<br><small style='background: #000;color:#fff; padding:5px'>&#8358;{{number_format($receiptDetails->total)}}</small></td>
-                  <td>Payment method:<br><small style='background: #000;color:#fff; padding:5px'>{{$receiptDetails->method_of_payment}}</small></td>
-                  <td>Debt ID:<br><small style='background: #000;color:#fff; padding:5px'>{{$receiptDetails->debt_id ?? 'NILL'}}</small></td>
+                  <td>Discount on sales:<br><small style='font-weight:bolder; padding:5px'>&#8358;{{number_format($receiptDetails->discount)}}</small></td>
+                  <td>Debt on sales:<br><small style='font-weight:bolder; padding:5px'>&#8358;{{number_format($receiptDetails->debt_balance)}}</small></td>
+                  <td>Payment method:<br><small style='font-weight:bolder; padding:5px'>{{$receiptDetails->method_of_payment}}</small></td>
+                  <td>Debt ID:<br><small style='font-weight:bolder; padding:5px'>{{$receiptDetails->debt_id ?? 'NILL'}}</small></td>
                 </tr>
                 <tr>
                   <td colspan="3">Customer name: {{$receiptDetails->customer_name ?? ''}}</td>
@@ -77,7 +76,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-4"></div>
+      <!-- <div class="col-md-4"></div> -->
     </div>
   </div>
   
