@@ -16,7 +16,7 @@
     <div class="row text-center">
       <!-- <div class="col-md-4"></div> -->
       <div class="col-md-12 bordered">
-      <h1>{{$settings->business_name ?? 'INVENTORY'}}</h1>
+      <h4>{{$settings->business_name ?? 'INVENTORY'}}</h4>
         <h3><u>{{$receiptDetails->sales_id ?? '-'}}</u></h3>
         <small>{{$settings->business_address ?? ''}} | </small>
         <small>{{$settings->contact_email ?? ''}} | </small>

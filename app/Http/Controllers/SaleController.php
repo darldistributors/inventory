@@ -142,15 +142,14 @@ class SaleController extends Controller
             $profitMargin += ($pr->selling_price - $pr->unit_cost) * $pr->quantity;
         }
         $profitMargin -= $request->discount;
-        // print_r();
-        // die();
+        
         
         $sqlStatement = '';
 
         foreach ($productsData as $key => $value) {
             $sqlStatement .= 'UPDATE products SET in_stock = in_stock - '.$value->quantity.' WHERE id = '.$key.';';
         }
-    
+
         $debtID = uniqid();
         $salesID = date('dmy').mt_rand(999,99999);
        
@@ -161,7 +160,7 @@ class SaleController extends Controller
                 'cashier_name' => Auth::user()->name,
                 'customer_name' => $request->customer_name,
                 'discount' => $request->discount ?? 0,
-                'total' => $request->total,
+                'total' => ($request->total - $request->discount - $request->debt),
                 'method_of_payment' => $request->method_of_payment,
                 'customer_phone' => $request->customer_phone,
                 'is_having_debts' => ($request->debt >= 1),
@@ -182,7 +181,7 @@ class SaleController extends Controller
                 'sales_id' => $salesID,
                 'customer_name' => $request->customer_name,
                 'discount' => $request->discount ?? 0,
-                'total' => $request->total,
+                'total' => ($request->total - $request->discount - $request->debt),
                 'profit_margin' => $profitMargin,
                 'method_of_payment' => $request->method_of_payment,
                 'customer_phone' => $request->customer_phone,

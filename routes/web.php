@@ -114,6 +114,9 @@ Route::get('admin/print-receipt/{receipt_no?}', [ReportController::class,'printR
 Route::get('admin/product/expiring', [ReportController::class,'expiringProducts'
 ])->middleware(['auth'])->name('expiring');
 
+Route::post('admin/product/delete', [ProductController::class,'deleteProduct'
+])->middleware(['auth'])->name('product.delete');
+
 
 // Route::get('admin/product-category', [CategoryController::class,'index'
 // ])->middleware(['auth'])->name('product.category');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\ProductSales;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Settings;
 
@@ -66,5 +68,16 @@ class ProductController extends Controller
             ]);
 
         return back()->with('success', 'Inventory updated successfully');
+    }
+
+    public function deleteProduct(Request $request){
+        //delete product
+        $request->validate([
+            'product_id' => ['required']
+        ]);
+        Order::where('product_id',  $request->product_id)->delete();
+        ProductSales::where('product_id',  $request->product_id)->delete();
+        Product::where('id',  $request->product_id)->delete();
+        return back()->with('success', 'Product deleted successfully');
     }
 }

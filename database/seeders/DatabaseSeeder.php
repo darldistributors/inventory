@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'password' => 'pass',
             'name' => 'John Doe',
-            'type'=>'admin'
+            'role'=>'admin'
         ]);
 
         // Products insert

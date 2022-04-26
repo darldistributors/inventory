@@ -63,7 +63,8 @@
                   <td>{{ $product->supplier_phone }}</td>
                   <td>
                     <a href="#" class='btn btn-sm btn-primary' name="delete" data-toggle="modal" data-target="#modal-success-product-edit"><i class='fa fa-edit'></i></a>         
-                    <a href="#" class='btn btn-sm btn-danger' name="delete" ><i class='fa fa-trash'></i></a>
+                    <a onclick="populateDelete({{$product->id}})" type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete" title="delete product"><i class='fa fa-trash'></i></a>
+                    <!-- <a href="#" class='btn btn-sm btn-danger' name="delete" ><i class='fa fa-trash'></i></a> -->
                   </td>
                 </tr>
                 @empty
@@ -146,6 +147,37 @@
         </div>
         <!-- /.modal -->
 
+        <!-- delete modal starts -->
+              <!-- Modal for View Inventory Report -->
+              <div class="modal fade" id="modal-delete">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header" style="background-color: red;color:#fff;text-align:center">
+                <button style="color: red;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                  <h3>DELETING A PRODUCT</h3>
+              </div>
+              <div class="modal-body">
+              <form role="form" method="POST" action="{{ route('product.delete') }}">
+                @csrf
+                  <div class="alert alert-danger">
+                    <strong>NOTE:</strong> You are about to delete a product. Deleting a product might affect records related to the prodcut like orders made, and sales.
+                    <br>
+                    <input type="hidden" name="product_id" id="del_id" value=''>
+                    <label for="yes"><input type="checkbox"  id="yes" required> Are you sure you wish to continue?</label>
+                  </div>
+                  <button type="submit" class="btn btn-danger">Delete<i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                  <button type="button" class="btn btn-primary">Cancel <i class="fa fa-times" aria-hidden="true"></i></button>
+                </form>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <!-- delete modal stops -->
       <!-- Modal for View Inventory Report -->
           <div class="modal fade" id="modal-success-NewProduct">
           <div class="modal-dialog">
@@ -216,7 +248,7 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2020  - <?php echo date("Y"); ?> <a target="_blank" href="#">Darl Distributors</a>.</strong> All rights
+    <strong>Copyright &copy; 2020  - <?php echo date("Y"); ?> </strong> All rights
     reserved.
 </footer>
 
@@ -226,7 +258,11 @@
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-
+<script>
+  function populateDelete(id){
+    document.getElementById('del_id').value = id
+  }
+</script>
 <!-- jQuery 3 -->
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
@@ -243,7 +279,7 @@
 <script>
   $(function () {
    //Initialize Select2 Elements
-    $('.select2').select2()
+    // $('.select2').select2()
 
 })
   $.widget.bridge('uibutton', $.ui.button);
